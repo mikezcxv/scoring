@@ -23,7 +23,7 @@ from sklearn.grid_search import GridSearchCV
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 df = pd.read_csv(dir_path + '/Train.csv')
-df_test = pd.read_csv(dir_path + '/Test.csv')
+df_test = pd.read_csv(dir_path + '/Test_origin.csv')
 df_test_original = df_test.copy()
 
 # Let's take a look at the data
@@ -154,12 +154,12 @@ class EnsemblePredict:
         self.p4.fit(_x_train, _y_train)
 
     def predict(self, data):
-        res1 = _predict(self.p1, data)
-        res2 = _predict(self.p2, data)
-        res3 = _predict(self.p3, data)
-        res4 = _predict(self.p4, data)
+        res1 = _predict_proba(self.p1, data)
+        res2 = _predict_proba(self.p2, data)
+        res3 = _predict_proba(self.p3, data)
+        res4 = _predict_proba(self.p4, data)
 
-        return np.round((res1 + res2 + res3 + res4) / 4)
+        return np.round((res1 + res2 + res3 + res4) / 4, 7)
 
 
 classifiers = [
@@ -271,7 +271,7 @@ clf = EnsemblePredict()
 clf.fit(X, y)
 predictions = clf.predict(df_test)
 
-df_test_original['Status'] = np.where(predictions == 1, 'Good', 'Bad')
+df_test_original['Status'] = predictions
 # print(df_test_original)
 
 # Predict and save data
