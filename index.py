@@ -272,7 +272,7 @@ clf.fit(X, y)
 predictions = clf.predict(df_test)
 
 df_test_original['Status'] = np.where(predictions == 1, 'Good', 'Bad')
-print(df_test_original)
+# print(df_test_original)
 
 # Predict and save data
 df_test_original.to_csv(dir_path + '/Test.csv', index=False)
